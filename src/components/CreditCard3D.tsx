@@ -33,7 +33,7 @@ export const CreditCard3D = ({ className }: CreditCard3DProps) => {
           {/* Card chip and logo */}
           <div className="flex justify-between items-start">
             <div className="w-12 h-8 bg-gaming-primary rounded opacity-80" />
-            <div className="text-gaming-primary font-bold text-xl">GAME</div>
+            <div className="text-gaming-primary font-bold text-2xl aqube-gradient bg-clip-text text-transparent">AQUBE</div>
           </div>
           
           {/* Card number */}
