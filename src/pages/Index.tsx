@@ -551,6 +551,7 @@ const Index = () => {
         </div>
       </footer>
     </div>
+    </>
   );
 };
 
