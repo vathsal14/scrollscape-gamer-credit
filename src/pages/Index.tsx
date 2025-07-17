@@ -4,6 +4,10 @@ import { ParallaxLayer, MouseParallax } from '@/components/ParallaxLayers';
 import { CreditCard3D } from '@/components/CreditCard3D';
 import { FeatureCard } from '@/components/FeatureCard';
 import { FloatingElement } from '@/components/FloatingElement';
+import OpeningAnimation from '@/components/OpeningAnimation';
+import GameArena from '@/components/GameArena';
+import Leaderboard from '@/components/Leaderboard';
+import Footer from '@/components/Footer';
 import { 
   Gamepad2, 
   Trophy, 
@@ -17,7 +21,13 @@ import {
   Coins,
   Sparkles,
   Rocket,
-  Crown
+  Crown,
+  Target,
+  Eye,
+  DollarSign,
+  Users2,
+  Calendar,
+  Bot
 } from 'lucide-react';
 import heroCard from '@/assets/hero-card.jpg';
 import gamingBg from '@/assets/gaming-bg.jpg';
@@ -27,7 +37,13 @@ import geometricBg from '@/assets/geometric-bg.jpg';
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [showAnimation, setShowAnimation] = useState(true);
   const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowAnimation(false), 3500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -64,21 +80,27 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gaming-background overflow-x-hidden">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-gaming-background/80 backdrop-blur-md border-b border-gaming-primary/20">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="text-3xl font-bold aqube-gradient bg-clip-text text-transparent">
-            Aqube
+    <>
+      {showAnimation && <OpeningAnimation />}
+      <div className="min-h-screen bg-gaming-background overflow-x-hidden">
+        {/* Navigation */}
+        <nav className="fixed top-0 w-full z-50 bg-gaming-background/80 backdrop-blur-md border-b border-gaming-primary/20">
+          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div className="text-3xl font-bold aqube-gradient bg-clip-text text-transparent">
+              AqubeXP
+            </div>
+            <div className="hidden md:flex space-x-8">
+              <a href="/" className="text-gaming-primary glow-text">Home</a>
+              <a href="#features" className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">Features</a>
+              <a href="/about" className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">About</a>
+              <a href="/refer" className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">Refer & Earn</a>
+              <a href="/faq" className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">FAQ</a>
+            </div>
+            <a href="#join" className="bg-gaming-primary text-gaming-background px-6 py-2 rounded-full font-semibold hover:shadow-glow transition-all">
+              Join Aqube XP
+            </a>
           </div>
-          <div className="hidden md:flex space-x-8">
-            <a href="#features" className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">Features</a>
-            <a href="#rewards" className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">Rewards</a>
-            <a href="#apply" className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">Apply</a>
-          </div>
-          <Button variant="gaming-outline" size="sm" className="magnetic-hover">Login</Button>
-        </div>
-      </nav>
+        </nav>
 
       {/* Hero Section with Multiple Parallax Layers */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden parallax-container">
@@ -131,26 +153,20 @@ const Index = () => {
                 </div>
                 
                 <h1 className="text-5xl md:text-7xl font-bold text-foreground leading-tight">
-                  Level Up Your
-                  <span className="block text-transparent bg-clip-text aqube-gradient glow-text">
-                    Gaming Experience
-                  </span>
+                  <span className="text-transparent bg-clip-text aqube-gradient glow-text">AqubeXP</span>
+                  <span className="block text-foreground">Not Just a Card</span>
+                  <span className="block text-gaming-primary">A Power-Up</span>
                 </h1>
                 
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Aqube's revolutionary gaming credit card unlocks exclusive rewards, 
-                  early access to new releases, and premium gaming experiences designed for true gamers.
+                  India's first gaming credit card is on the way - Level up your gaming experience Join the Waitlist now!!
                 </p>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button variant="hero" size="lg" className="group">
                   <Play className="mr-2 group-hover:scale-110 transition-transform" />
-                  Get Your Aqube Card
-                </Button>
-                <Button variant="gaming-outline" size="lg" className="magnetic-hover">
-                  <Rocket className="mr-2" />
-                  Explore Features
+                  Pre Register Now
                 </Button>
               </div>
               
@@ -245,61 +261,86 @@ const Index = () => {
         
         <div className="relative z-10 container mx-auto px-6">
           <div className="text-center mb-20 scroll-reveal">
-            <div className="inline-flex items-center space-x-2 bg-gaming-primary/10 border border-gaming-primary/30 rounded-full px-6 py-3 mb-6">
-              <Crown className="w-5 h-5 text-gaming-primary" />
-              <span className="text-gaming-primary font-semibold">Premium Features</span>
-            </div>
-            
             <h2 className="text-6xl font-bold text-foreground mb-6">
-              Epic <span className="text-transparent bg-clip-text aqube-gradient glow-text">Gaming Benefits</span>
+              Unlock Gaming <span className="text-transparent bg-clip-text aqube-gradient glow-text">Rewards</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Unlock a world of gaming benefits and exclusive perks designed specifically for the gaming community.
+            <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+              Experience the perfect fusion of gaming and financial benefits. Our credit card is designed specifically for gamers who want to maximize their rewards and build credit.
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="scroll-reveal">
               <FeatureCard
-                icon={Gamepad2}
-                title="Gaming Rewards"
-                description="Earn up to 5x points on gaming purchases including consoles, games, and accessories."
+                icon={Target}
+                title="All-in-One Platform"
+                description="Access app and card features, including a gaming marketplace and expense tracking tool, for a unified gaming and fintech experience."
               />
             </div>
             <div className="scroll-reveal">
               <FeatureCard
-                icon={Trophy}
-                title="Exclusive Access"
-                description="Get early access to beta games, limited edition releases, and gaming events."
-              />
-            </div>
-            <div className="scroll-reveal">
-              <FeatureCard
-                icon={Zap}
-                title="Instant Cashback"
-                description="Receive instant cashback on select gaming purchases and streaming services."
-              />
-            </div>
-            <div className="scroll-reveal">
-              <FeatureCard
-                icon={Shield}
-                title="Purchase Protection"
-                description="Extended warranty and purchase protection for all your gaming gear."
+                icon={Eye}
+                title="Transparent Payments"
+                description="No hidden charges; choose between free and paid card options for extra advantages; enjoy 0% interest on select benefits."
               />
             </div>
             <div className="scroll-reveal">
               <FeatureCard
                 icon={Gift}
-                title="Birthday Bonuses"
-                description="Special birthday rewards including free games and bonus points."
+                title="Rewards & Perks"
+                description="Earn points, cashback, and exclusive offers tailored for gamers."
+              />
+            </div>
+            <div className="scroll-reveal">
+              <FeatureCard
+                icon={Calendar}
+                title="Exclusive Events & Progression"
+                description="Participate in exclusive events, track your XP progress, and compete on leaderboards to unlock special perks."
+              />
+            </div>
+            <div className="scroll-reveal">
+              <FeatureCard
+                icon={Bot}
+                title="AI Features"
+                description="Utilize advanced AI tools for personalized recommendations and smart assistance"
               />
             </div>
             <div className="scroll-reveal">
               <FeatureCard
                 icon={Star}
-                title="VIP Status"
-                description="Enjoy VIP customer service and priority support for all your needs."
+                title="Gaming-First Design"
+                description="Built by gamers, for gamers with features that understand your gaming lifestyle."
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Exclusive Pre-registration Offer */}
+      <section className="relative py-20 bg-gaming-surface overflow-hidden">
+        <div className="relative z-10 container mx-auto px-6">
+          <div className="max-w-4xl mx-auto bg-gaming-surface-elevated border border-gaming-primary/30 rounded-3xl p-12 text-center">
+            <div className="inline-flex items-center space-x-2 bg-gaming-primary/10 border border-gaming-primary/30 rounded-full px-6 py-3 mb-8">
+              <Gift className="w-5 h-5 text-gaming-primary" />
+              <span className="text-gaming-primary font-semibold">Exclusive Pre-registration Offer</span>
+            </div>
+            
+            <h2 className="text-5xl font-bold text-foreground mb-6">
+              Free Official <span className="text-transparent bg-clip-text aqube-gradient glow-text">Esports Jersey</span>
+            </h2>
+            
+            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              All pre-registered users will receive an exclusive esports team jersey with their Aqube XP credit card.
+            </p>
+            
+            <div className="space-y-4 mb-8">
+              <p className="text-lg font-semibold text-gaming-primary">Secure Your Jersey Now</p>
+              <Button variant="hero" size="lg" className="mr-4">
+                Pre-register Now
+              </Button>
+              <Button variant="outline" size="lg">
+                Get Your Free Jersey
+              </Button>
             </div>
           </div>
         </div>
