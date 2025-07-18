@@ -1,7 +1,11 @@
 import { Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const Footer = () => {
+interface FooterProps {
+  onSurveyClick?: () => void;
+}
+
+const Footer = ({ onSurveyClick }: FooterProps) => {
   return (
     <footer className="bg-gaming-surface-elevated border-t border-gaming-primary/20">
       <div className="container mx-auto px-6 py-16">
@@ -65,7 +69,10 @@ const Footer = () => {
             <p className="text-muted-foreground mb-6 leading-relaxed">
               Share your gaming preferences and financial needs to help us create the perfect credit card for you.
             </p>
-            <Button variant="outline" className="w-full">
+            <Button 
+              onClick={onSurveyClick}
+              className="bg-gaming-primary hover:bg-gaming-primary/90"
+            >
               Take Survey
             </Button>
           </div>

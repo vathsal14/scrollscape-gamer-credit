@@ -6,10 +6,13 @@ import { FeatureCard } from '@/components/FeatureCard';
 import { FloatingElement } from '@/components/FloatingElement';
 import OpeningAnimation from '@/components/OpeningAnimation';
 import { Auth } from '@/components/Auth';
-import SlotMachine from '@/components/SlotMachine';
+import SlotMachineModal from '@/components/SlotMachineModal';
 import ReferralSystem from '@/components/ReferralSystem';
 import ConnectedLeaderboard from '@/components/ConnectedLeaderboard';
 import Footer from '@/components/Footer';
+import SurveyModal from '@/components/SurveyModal';
+import GamingQuiz from '@/components/GamingQuiz';
+import WordScramble from '@/components/WordScramble';
 import { 
   Gamepad2, 
   Trophy, 
@@ -38,6 +41,7 @@ import heroCard from '@/assets/hero-card.jpg';
 import gamingBg from '@/assets/gaming-bg.jpg';
 import particlesBg from '@/assets/particles-bg.jpg';
 import geometricBg from '@/assets/geometric-bg.jpg';
+import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -45,6 +49,12 @@ const Index = () => {
   const [showAnimation, setShowAnimation] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [slotMachineOpen, setSlotMachineOpen] = useState(false);
+  const [surveyOpen, setSurveyOpen] = useState(false);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [wordScrambleOpen, setWordScrambleOpen] = useState(false);
+  const [userPoints, setUserPoints] = useState(0);
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -266,8 +276,18 @@ const Index = () => {
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              <div className="scroll-reveal">
-                <SlotMachine user={user} />
+              <div className="scroll-reveal bg-gaming-surface p-6 rounded-2xl border border-gaming-primary/30">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🎰</div>
+                  <h3 className="text-xl font-semibold text-gaming-primary mb-2">Slot Machine</h3>
+                  <p className="text-muted-foreground mb-4">Try your luck! Win points and prizes with lucky streaks.</p>
+                  <Button 
+                    onClick={() => setSlotMachineOpen(true)}
+                    className="w-full bg-gaming-primary hover:bg-gaming-primary/90"
+                  >
+                    Spin Now
+                  </Button>
+                </div>
               </div>
               
               <div className="scroll-reveal bg-gaming-surface p-6 rounded-2xl border border-gaming-primary/30">
@@ -522,7 +542,13 @@ const Index = () => {
           </div>
         </section>
 
-        <Footer />
+        <Footer onSurveyClick={() => setSurveyOpen(true)} />
+        
+        {/* Modals */}
+        <SlotMachineModal user={user} isOpen={slotMachineOpen} onClose={() => setSlotMachineOpen(false)} />
+        <SurveyModal user={user} isOpen={surveyOpen} onClose={() => setSurveyOpen(false)} />
+        <GamingQuiz user={user} isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
+        <WordScramble user={user} isOpen={wordScrambleOpen} onClose={() => setWordScrambleOpen(false)} />
       </div>
     </>
   );
