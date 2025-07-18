@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { User, Session } from '@supabase/supabase-js';
 import { toast } from 'sonner';
-import { Eye, EyeOff, Mail, Lock, User as UserIcon, LogOut } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User as UserIcon, LogOut, Gift } from 'lucide-react';
 
 interface AuthProps {
   onAuthChange?: (user: User | null) => void;
@@ -23,14 +23,42 @@ export const Auth = ({ onAuthChange }: AuthProps) => {
     password: '',
     displayName: ''
   });
+  const [referralCode, setReferralCode] = useState('');
 
   useEffect(() => {
+    // Check for referral code in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    if (refCode) {
+      setReferralCode(refCode);
+    }
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         onAuthChange?.(session?.user ?? null);
+        
+        // Process referral after successful signup
+        if (event === 'SIGNED_IN' && session?.user && referralCode) {
+          setTimeout(async () => {
+            try {
+              const { error } = await supabase.rpc('process_referral', {
+                referred_user_id: session.user.id,
+                referral_code: referralCode
+              });
+              
+              if (!error) {
+                toast.success('🎉 Referral bonus applied! Your referrer earned a spin!');
+                // Clear referral code from URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+              }
+            } catch (error) {
+              console.error('Error processing referral:', error);
+            }
+          }, 1000);
+        }
       }
     );
 
@@ -42,19 +70,18 @@ export const Auth = ({ onAuthChange }: AuthProps) => {
     });
 
     return () => subscription.unsubscribe();
-  }, [onAuthChange]);
+  }, [onAuthChange, referralCode]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const redirectUrl = `${window.location.origin}/`;
       const { error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
-          emailRedirectTo: redirectUrl,
+          emailRedirectTo: `${window.location.origin}/`,
           data: {
             display_name: formData.displayName
           }
@@ -64,7 +91,7 @@ export const Auth = ({ onAuthChange }: AuthProps) => {
       if (error) {
         toast.error(error.message);
       } else {
-        toast.success('Check your email for verification link!');
+        toast.success('Welcome to Aqube XP! Account created successfully!');
       }
     } catch (error) {
       toast.error('Something went wrong!');
@@ -210,6 +237,18 @@ export const Auth = ({ onAuthChange }: AuthProps) => {
           
           <TabsContent value="signup">
             <form onSubmit={handleSignUp} className="space-y-4">
+              {referralCode && (
+                <div className="p-3 bg-gaming-primary/10 rounded-lg border border-gaming-primary/30 mb-4">
+                  <div className="flex items-center gap-2 text-gaming-primary">
+                    <Gift className="w-4 h-4" />
+                    <span className="text-sm font-semibold">Referral Code Applied!</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Code: {referralCode} - Your referrer will get a bonus spin!
+                  </div>
+                </div>
+              )}
+              
               <div className="space-y-2">
                 <Label htmlFor="signup-name">Display Name</Label>
                 <div className="relative">
