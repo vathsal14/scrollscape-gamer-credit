@@ -307,6 +307,21 @@ export const Auth = ({ onAuthChange }: AuthProps) => {
                 </div>
               </div>
               
+              <div className="space-y-2">
+                <Label htmlFor="signup-referral">Referral Code (Optional)</Label>
+                <div className="relative">
+                  <Gift className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="signup-referral"
+                    type="text"
+                    placeholder="Enter referral code"
+                    value={referralCode}
+                    onChange={(e) => setReferralCode(e.target.value)}
+                    className="pl-10 bg-gaming-background border-gaming-primary/30"
+                  />
+                </div>
+              </div>
+              
               <Button 
                 type="submit" 
                 className="w-full bg-gaming-primary hover:bg-gaming-primary/90" 
