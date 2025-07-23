@@ -113,12 +113,22 @@ const Index = () => {
             </div>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex space-x-8 items-center">
               <button onClick={() => scrollToSection('hero')} className="text-gaming-primary glow-text">Home</button>
               <button onClick={() => scrollToSection('features')} className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">Features</button>
               <button onClick={() => scrollToSection('about')} className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">About</button>
               <button onClick={() => scrollToSection('refer')} className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">Refer & Earn</button>
               <button onClick={() => scrollToSection('faq')} className="text-foreground hover:text-gaming-primary transition-colors hover:glow-text">FAQ</button>
+              
+              {/* XP Points Display */}
+              {user && (
+                <div className="flex items-center gap-2 bg-gaming-primary/20 px-3 py-1 rounded-full border border-gaming-primary/30">
+                  <div className="w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                    <Coins className="w-3 h-3 text-white" />
+                  </div>
+                  <span className="text-gaming-primary font-semibold text-sm">{userPoints} XP</span>
+                </div>
+              )}
             </div>
             
             {/* Mobile menu button */}

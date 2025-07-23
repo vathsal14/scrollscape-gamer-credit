@@ -271,15 +271,15 @@ const SlotMachineModal = ({ user, isOpen, onClose }: SlotMachineModalProps) => {
                     
                     {/* Reels Container */}
                     <div className="relative z-10">
-                      <div className="flex justify-center space-x-3 mb-4">
+                      <div className={`flex justify-center space-x-3 mb-4 transition-all duration-500 ${spinning ? 'animate-bounce' : ''}`}>
                         {reels.map((symbol, index) => (
                           <div
                             key={index}
                             className={`w-16 h-16 bg-white rounded-full border-4 border-gray-300 shadow-lg flex items-center justify-center text-2xl transition-all duration-300 ${
-                              spinning ? 'slot-reel-spin scale-110' : 'hover:scale-105'
+                              spinning ? 'animate-pulse scale-110' : 'hover:scale-105'
                             }`}
                           >
-                            <div className={`${spinning ? 'blur-sm' : ''} transition-all duration-300`}>
+                            <div className={`${spinning ? 'animate-spin' : ''} transition-all duration-300`}>
                               {symbol}
                             </div>
                           </div>
