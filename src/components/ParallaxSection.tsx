@@ -14,13 +14,32 @@ export const ParallaxSection = ({ children, speed = 0.5, className = '' }: Paral
       if (!sectionRef.current) return;
       
       const scrolled = window.pageYOffset;
-      const parallax = scrolled * speed;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
       
-      sectionRef.current.style.transform = `translateY(${parallax}px)`;
+      // Only apply parallax when element is in viewport
+      if (rect.bottom >= 0 && rect.top <= windowHeight) {
+        const parallax = scrolled * speed;
+        sectionRef.current.style.transform = `translate3d(0, ${parallax}px, 0)`;
+        sectionRef.current.style.willChange = 'transform';
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const throttledScroll = (() => {
+      let ticking = false;
+      return () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+    })();
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    return () => window.removeEventListener('scroll', throttledScroll);
   }, [speed]);
 
   return (

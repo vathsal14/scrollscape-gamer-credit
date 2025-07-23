@@ -22,29 +22,51 @@ export const ParallaxLayer = ({
       if (!layerRef.current) return;
       
       const scrolled = window.pageYOffset;
-      let transform = '';
+      const rect = layerRef.current.getBoundingClientRect();
+      const elementTop = scrolled + rect.top;
+      const windowHeight = window.innerHeight;
       
-      switch (direction) {
-        case 'up':
-          transform = `translateY(${(scrolled - offset) * speed}px)`;
-          break;
-        case 'down':
-          transform = `translateY(${-(scrolled - offset) * speed}px)`;
-          break;
-        case 'left':
-          transform = `translateX(${(scrolled - offset) * speed}px)`;
-          break;
-        case 'right':
-          transform = `translateX(${-(scrolled - offset) * speed}px)`;
-          break;
+      // Only apply parallax when element is in viewport
+      if (rect.bottom >= 0 && rect.top <= windowHeight) {
+        let transform = '';
+        const relativeScroll = scrolled - elementTop + windowHeight;
+        
+        switch (direction) {
+          case 'up':
+            transform = `translate3d(0, ${relativeScroll * speed}px, 0)`;
+            break;
+          case 'down':
+            transform = `translate3d(0, ${-relativeScroll * speed}px, 0)`;
+            break;
+          case 'left':
+            transform = `translate3d(${relativeScroll * speed}px, 0, 0)`;
+            break;
+          case 'right':
+            transform = `translate3d(${-relativeScroll * speed}px, 0, 0)`;
+            break;
+        }
+        
+        layerRef.current.style.transform = transform;
+        layerRef.current.style.willChange = 'transform';
       }
-      
-      layerRef.current.style.transform = transform;
     };
 
-    window.addEventListener('scroll', handleScroll);
+    const throttledScroll = (() => {
+      let ticking = false;
+      return () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+    })();
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
     handleScroll(); // Initialize position
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', throttledScroll);
   }, [speed, direction, offset]);
 
   return (

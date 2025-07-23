@@ -177,158 +177,188 @@ const SlotMachineModal = ({ user, isOpen, onClose }: SlotMachineModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md bg-gaming-surface border-gaming-primary/30">
-        <DialogHeader>
-          <DialogTitle className="text-gaming-primary flex items-center justify-center gap-2">
-            <Play className="w-6 h-6" />
+      <DialogContent className="max-w-lg bg-gradient-to-b from-black via-gray-900 to-black border-2 border-gaming-primary/50 overflow-hidden">
+        <DialogHeader className="relative">
+          <button 
+            onClick={onClose}
+            className="absolute -top-2 -right-2 w-8 h-8 bg-gray-600 hover:bg-gray-500 rounded-full flex items-center justify-center transition-colors"
+          >
+            <X className="w-4 h-4 text-white" />
+          </button>
+          
+          {/* Progress bar */}
+          <div className="flex items-center justify-center gap-1 mb-4">
+            <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+              <span className="text-white text-xs">✓</span>
+            </div>
+            <div className="w-12 h-1 bg-yellow-400"></div>
+            <div className="w-6 h-6 rounded-full bg-gray-400 flex items-center justify-center">
+              <span className="text-gray-700 text-xs">○</span>
+            </div>
+            <div className="w-12 h-1 bg-gray-400"></div>
+            <div className="w-6 h-6 rounded-full bg-gray-400 flex items-center justify-center">
+              <span className="text-gray-700 text-xs">○</span>
+            </div>
+            <div className="w-12 h-1 bg-gray-400"></div>
+            <div className="w-6 h-6 rounded-full bg-gray-400 flex items-center justify-center">
+              <span className="text-gray-700 text-xs">○</span>
+            </div>
+            <div className="w-12 h-1 bg-gray-400"></div>
+            <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center">
+              <Gift className="w-3 h-3 text-white" />
+            </div>
+          </div>
+          
+          <DialogTitle className="text-gaming-primary flex items-center justify-center gap-2 text-lg">
+            <Play className="w-5 h-5" />
             Spin & Win
           </DialogTitle>
         </DialogHeader>
         
         {!user ? (
           <div className="text-center py-8">
-            <div className="text-muted-foreground mb-4">
+            <div className="text-gray-400 mb-6">
               Sign in to start spinning and winning rewards!
             </div>
-            <div className="flex justify-center space-x-4 text-6xl mb-6">
-              <div className="bg-gaming-background p-4 rounded-lg border border-gaming-primary/30">
-                🎰
-              </div>
-              <div className="bg-gaming-background p-4 rounded-lg border border-gaming-primary/30">
-                🎰
-              </div>
-              <div className="bg-gaming-background p-4 rounded-lg border border-gaming-primary/30">
-                🎰
-              </div>
+            <div className="flex justify-center space-x-3">
+              {['🎰', '🎰', '🎰'].map((symbol, index) => (
+                <div key={index} className="w-16 h-16 bg-gradient-to-b from-gray-800 to-gray-900 rounded-lg border-2 border-gaming-primary/30 flex items-center justify-center text-3xl">
+                  {symbol}
+                </div>
+              ))}
             </div>
           </div>
         ) : (
-          <div className="space-y-6">
-            {/* Progress bar showing steps */}
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                <span className="text-white text-sm">✓</span>
-              </div>
-              <div className="w-16 h-1 bg-yellow-400"></div>
-              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-600 text-sm">⏱</span>
-              </div>
-              <div className="w-16 h-1 bg-gray-300"></div>
-              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-600 text-sm">○</span>
-              </div>
-              <div className="w-16 h-1 bg-gray-300"></div>
-              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-600 text-sm">○</span>
-              </div>
-              <div className="w-16 h-1 bg-gray-300"></div>
-              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
-                <Gift className="w-4 h-4 text-white" />
-              </div>
-            </div>
-
+          <div className="space-y-4">
             {/* Stats */}
-            <div className="flex justify-center gap-6 text-sm mb-6">
+            <div className="flex justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">1</span>
+                  <Zap className="w-3 h-3 text-white" />
                 </div>
-                <span>{spins} spins</span>
+                <span className="text-white">{spins} spins</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
-                  <span className="text-white text-xs">💧</span>
+                  <Coins className="w-3 h-3 text-white" />
                 </div>
-                <span>179 ml</span>
+                <span className="text-white">{points} points</span>
               </div>
             </div>
 
             {/* Main Slot Machine */}
-            <div className="relative">
-              <div className="bg-gradient-to-b from-gray-800 to-black p-6 rounded-3xl border-4 border-gray-700">
-                {/* Top section with Uber branding */}
-                <div className="text-center mb-4">
-                  <div className="text-white text-sm mb-2">AqubeXP</div>
-                  <div className="text-white text-lg font-bold">GET 10% OFF</div>
-                  <div className="text-white text-sm">on buying AqubeXP rewards</div>
-                </div>
-                
-                {/* Blue reward section */}
-                <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-6 rounded-2xl relative overflow-hidden">
-                  {/* Confetti decorations */}
-                  <div className="absolute inset-0">
-                    <div className="absolute top-2 left-4 text-yellow-400 text-xs rotate-12">🎊</div>
-                    <div className="absolute top-4 right-6 text-yellow-300 text-xs -rotate-12">🎉</div>
-                    <div className="absolute bottom-4 left-6 text-yellow-400 text-xs rotate-45">✨</div>
-                    <div className="absolute bottom-2 right-4 text-yellow-300 text-xs -rotate-45">🎊</div>
+            <div className="relative mx-auto max-w-sm">
+              {/* Slot Machine Frame */}
+              <div className={`bg-gradient-to-b from-gray-700 via-gray-800 to-gray-900 p-1 rounded-3xl shadow-2xl border-4 border-yellow-400 ${spinning ? 'machine-glow' : ''}`}>
+                <div className="bg-gradient-to-b from-gray-900 to-black p-6 rounded-2xl">
+                  
+                  {/* Top Display */}
+                  <div className="text-center mb-4">
+                    <div className="text-yellow-400 text-sm font-bold tracking-wider">AQUBEXP</div>
+                    <div className="text-white text-xs">GAMING REWARDS</div>
                   </div>
                   
-                  {/* Slot machine reels */}
-                  <div className="flex justify-center space-x-2 mb-4">
-                    {reels.map((symbol, index) => (
-                      <div
-                        key={index}
-                        className={`w-16 h-16 bg-white rounded-full flex items-center justify-center text-3xl transition-all duration-300 ${
-                          spinning ? 'animate-spin' : ''
-                        }`}
-                      >
-                        {index === 1 ? (
-                          <div className="w-8 h-8 bg-gradient-to-b from-orange-400 to-orange-600 rounded-full"></div>
-                        ) : (
-                          symbol
-                        )}
+                  {/* Slot Display */}
+                  <div className="bg-gradient-to-b from-blue-600 to-blue-800 p-6 rounded-xl relative overflow-hidden shadow-inner">
+                    {/* Background effects */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-purple-600/50"></div>
+                    <div className="absolute inset-0">
+                      <div className="absolute top-2 left-4 text-yellow-300 text-sm animate-pulse">✨</div>
+                      <div className="absolute top-4 right-6 text-yellow-300 text-sm animate-bounce">💫</div>
+                      <div className="absolute bottom-4 left-6 text-yellow-300 text-sm animate-pulse">⭐</div>
+                      <div className="absolute bottom-2 right-4 text-yellow-300 text-sm animate-bounce">✨</div>
+                    </div>
+                    
+                    {/* Reels Container */}
+                    <div className="relative z-10">
+                      <div className="flex justify-center space-x-3 mb-4">
+                        {reels.map((symbol, index) => (
+                          <div
+                            key={index}
+                            className={`w-16 h-16 bg-white rounded-full border-4 border-gray-300 shadow-lg flex items-center justify-center text-2xl transition-all duration-300 ${
+                              spinning ? 'slot-reel-spin scale-110' : 'hover:scale-105'
+                            }`}
+                          >
+                            <div className={`${spinning ? 'blur-sm' : ''} transition-all duration-300`}>
+                              {symbol}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="text-white text-lg font-bold mb-2">AqubeXP Rewards</div>
-                    <div className="text-white text-xl font-bold">
-                      {lastWin || 'Spin to Win!'}
+                      
+                      <div className="text-center">
+                        <div className="text-white text-lg font-bold mb-1">AqubeXP Rewards</div>
+                        <div className="text-yellow-300 text-lg font-bold">
+                          {spinning ? 'SPINNING...' : lastWin || 'Spin to Win!'}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                {/* Bottom section */}
-                <div className="text-center mt-4">
-                  <div className="text-white text-sm">AqubeXP</div>
-                  <div className="text-white text-sm">GET 10% OFF</div>
+                  
+                  {/* Prize Display */}
+                  <div className="mt-4 text-center">
+                    <div className="text-yellow-400 text-xs font-bold">GET 10% OFF</div>
+                    <div className="text-white text-xs">on AqubeXP purchases</div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Machine Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-b from-yellow-400/20 to-transparent rounded-3xl pointer-events-none animate-pulse"></div>
             </div>
 
             {/* Spin Button */}
-            <Button
-              onClick={spinReels}
-              disabled={spinning || spins <= 0}
-              className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 disabled:opacity-50"
-              size="lg"
-            >
-              {spinning ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                  Spinning...
-                </div>
-              ) : spins <= 0 ? (
-                'No Spins Left'
-              ) : (
-                `${spins} spins to spin again`
-              )}
-            </Button>
+            <div className="text-center">
+              <Button
+                onClick={spinReels}
+                disabled={spinning || spins <= 0}
+                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold py-4 rounded-xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-105 active:scale-95"
+                size="lg"
+              >
+                {spinning ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 border-3 border-black border-t-transparent rounded-full animate-spin" />
+                    <span className="text-lg">SPINNING...</span>
+                  </div>
+                ) : spins <= 0 ? (
+                  <span className="text-lg">NO SPINS LEFT</span>
+                ) : (
+                  <div className="flex items-center justify-center gap-2">
+                    <Play className="w-5 h-5" />
+                    <span className="text-lg">SPIN NOW ({spins} left)</span>
+                  </div>
+                )}
+              </Button>
+            </div>
 
             {/* Terms */}
             <div className="text-center">
-              <div className="text-xs text-muted-foreground">Terms and conditions</div>
+              <div className="text-xs text-gray-400 hover:text-gray-300 cursor-pointer">Terms and conditions</div>
             </div>
 
             {/* Rewards Info */}
-            <div className="text-xs text-muted-foreground space-y-1 bg-gaming-background p-3 rounded-lg">
-              <div className="font-semibold text-gaming-primary">Possible Rewards:</div>
-              <div className="grid grid-cols-2 gap-1">
-                <div>🍀🍀🍀 = 100 Points</div>
-                <div>⭐⭐⭐ = 500 Points</div>
-                <div>🔥🔥🔥 = 1000 Points</div>
-                <div>🎯🎯🎯 = Extra Spin</div>
+            <div className="bg-gray-900/50 backdrop-blur-sm p-4 rounded-xl border border-gaming-primary/30">
+              <div className="text-sm font-semibold text-gaming-primary mb-2 text-center">Possible Rewards</div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
+                <div className="flex items-center gap-1">
+                  <span>🍀🍀🍀</span>
+                  <span>100 Points</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span>⭐⭐⭐</span>
+                  <span>500 Points</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span>🔥🔥🔥</span>
+                  <span>1000 Points</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span>🎯🎯🎯</span>
+                  <span>Extra Spin</span>
+                </div>
+              </div>
+              <div className="text-center mt-3 text-xs text-gaming-accent">
+                Refer friends to get more spins!
               </div>
             </div>
           </div>
