@@ -10,9 +10,10 @@ interface SlotMachineModalProps {
   user: User | null;
   isOpen: boolean;
   onClose: () => void;
+  onPointsUpdate?: () => void;
 }
 
-const SlotMachineModal = ({ user, isOpen, onClose }: SlotMachineModalProps) => {
+const SlotMachineModal = ({ user, isOpen, onClose, onPointsUpdate }: SlotMachineModalProps) => {
   const [spinning, setSpinning] = useState(false);
   const [spins, setSpins] = useState(0);
   const [points, setPoints] = useState(0);
@@ -172,6 +173,11 @@ const SlotMachineModal = ({ user, isOpen, onClose }: SlotMachineModalProps) => {
 
       // Update user data
       await updateUserData(spins - spinsUsed, points + pointsWon);
+      
+      // Notify parent component to refresh points display
+      if (onPointsUpdate) {
+        onPointsUpdate();
+      }
     }, spinDuration);
   };
 

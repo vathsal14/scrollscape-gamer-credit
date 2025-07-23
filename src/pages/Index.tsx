@@ -96,9 +96,53 @@ const Index = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Fetch user points when user changes
+  useEffect(() => {
+    const fetchUserPoints = async () => {
+      if (!user) {
+        setUserPoints(0);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('points')
+          .eq('id', user.id)
+          .single();
+
+        if (error) throw error;
+        setUserPoints(data?.points || 0);
+      } catch (error) {
+        console.error('Error fetching user points:', error);
+        setUserPoints(0);
+      }
+    };
+
+    fetchUserPoints();
+  }, [user]);
+
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     setMobileMenuOpen(false);
+  };
+
+  // Function to refresh user points (called from slot machine)
+  const refreshUserPoints = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('points')
+        .eq('id', user.id)
+        .single();
+
+      if (error) throw error;
+      setUserPoints(data?.points || 0);
+    } catch (error) {
+      console.error('Error refreshing user points:', error);
+    }
   };
 
   return (
@@ -555,7 +599,12 @@ const Index = () => {
         <Footer onSurveyClick={() => setSurveyOpen(true)} />
         
         {/* Modals */}
-        <SlotMachineModal user={user} isOpen={slotMachineOpen} onClose={() => setSlotMachineOpen(false)} />
+        <SlotMachineModal 
+          user={user} 
+          isOpen={slotMachineOpen} 
+          onClose={() => setSlotMachineOpen(false)}
+          onPointsUpdate={refreshUserPoints}
+        />
         <SurveyModal user={user} isOpen={surveyOpen} onClose={() => setSurveyOpen(false)} />
         <GamingQuiz user={user} isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
         <WordScramble user={user} isOpen={wordScrambleOpen} onClose={() => setWordScrambleOpen(false)} />
